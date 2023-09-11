@@ -1,4 +1,6 @@
-setwd("C:/users/walkerro/desktop/r scripts/bncompare")
+library(here)
+
+setwd(here::here())
 
 # bring in data
 df <- read.csv("binford.csv")
@@ -55,6 +57,8 @@ arcs[arcs$strength > 0.5 & arcs$direction >= 0.5, ]
 plot(arcs)
 avg.bayesianNetwork = averaged.network(arcs, threshold = 0.5) #plot(avg.bayesianNetwork)
 (fit = bn.fit(avg.bayesianNetwork, df2))
+saveRDS(fit, file='binford bnet fit') 
+saveRDS(arcs, file='binford arcs') 
 
 pdf("binford.pdf") #, units="in", width=5, height=5, res=300)
 strength.plot(avg.bayesianNetwork, arcs, threshold=.5, 
@@ -63,8 +67,9 @@ strength.plot(avg.bayesianNetwork, arcs, threshold=.5,
               highlight = list(nodes = c("populationDensity"), col = "tomato", fill = "orange"),
               shape = "rectangle") #circle ellipse rectangle
 dev.off()
-saveRDS(arcs, file='binford') 
-arcs = readRDS(file='binford') 
+
+
+arcs = readRDS(file='binford arcs') 
 
 library(flextable)
 round_and_format <- function(number) {rr <- round(number,3)
